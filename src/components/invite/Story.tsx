@@ -17,7 +17,7 @@ export function Story() {
         />
         <ol className="space-y-10">
           {invite.story.map((s, i) => (
-            <li key={s.year}>
+            <li key={`${s.year}-${i}`}>
               <Reveal from={i % 2 === 0 ? "left" : "right"} delay={i * 60}>
                 <div className="relative pl-12">
                   <span
@@ -28,7 +28,7 @@ export function Story() {
                   </span>
                   <p className="font-display text-2xl text-brass">{s.year}</p>
                   <h3 className="mt-1 font-serif text-xl text-paper">{s.title}</h3>
-                  <p className="mt-2 font-sans text-sm leading-relaxed text-paper/65">{s.text}</p>
+                  <p className="mt-2 font-sans text-sm leading-relaxed whitespace-pre-line text-paper/65">{s.text}</p>
                 </div>
               </Reveal>
             </li>

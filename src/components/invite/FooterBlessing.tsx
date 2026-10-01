@@ -24,10 +24,10 @@ export function FooterBlessing() {
       <div className="relative px-5 py-24 text-center">
         <p className="font-script text-5xl text-brass">{invite.hashtag.replace("#", "")}</p>
         <Ornament className="mt-6 text-brass" />
-        <h2 className="mt-8 font-display text-[clamp(2.6rem,13vw,5rem)] leading-[0.85] tracking-wide text-paper uppercase">
-          {invite.coupleLine[0]}
-          <span className="mx-3 font-script text-3xl lowercase">and</span>
-          {invite.coupleLine[1]}
+        <h2 className="mt-8 flex flex-wrap items-center justify-center gap-x-2.5 sm:gap-x-4 gap-y-1 font-display text-[clamp(1.65rem,6.8vw,4.5rem)] leading-tight tracking-wide text-paper uppercase">
+          <span>{invite.coupleLine[0]}</span>
+          <span className="font-script text-2xl text-brass lowercase sm:text-3xl">and</span>
+          <span>{invite.coupleLine[1]}</span>
         </h2>
         <p className="mt-6 font-serif text-lg text-paper/70 italic">
           "May you be blessed with a hundred years of togetherness."

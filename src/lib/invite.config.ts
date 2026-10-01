@@ -86,30 +86,45 @@ export const invite: InviteConfig = {
   ],
   story: [
     {
-      year: "2020",
-      title: "The first hello",
-      text: "Two strangers, a chance conversation, and an effortless connection that neither of them expected.",
+      year: "2014",
+      title: "The first crossing",
+      text: "Two university mates, moving through the same circles and crossing paths from time to time — never knowing where the story would eventually lead.",
     },
     {
-      year: "2022",
-      title: "Penang evenings",
-      text: "Countless shared laughs, quiet walks, and a realization that home was simply wherever they were together.",
+      year: "2021",
+      title: "A chance encounter",
+      text: "Years later, they crossed paths again at court. A brief meeting, a small favour, and then life carried on.",
+    },
+    {
+      year: "2024",
+      title: "Almost, but not quite",
+      text: "They crossed paths once more and started talking. The timing wasn’t quite right, and the conversations eventually faded — for the moment.",
     },
     {
       year: "2025",
+      title: "The beginning",
+      text: "The message that changed everything\nA playful Instagram DM in May turned into everyday conversations, shared laughter, and something neither of them expected. By June, they went on their first date.",
+    },
+    {
+      year: "2025",
+      title: "A little more official",
+      text: "What started with a message became something real. By October, they were surrounded by family and celebrating their Nitchiyam — the beginning of their journey towards marriage.",
+    },
+    {
+      year: "2026",
       title: "The question",
-      text: "He asked. She had already known the answer from the very beginning.",
+      text: "In February, came the proposal. In May, surrounded by their families, they got engaged.",
     },
     {
       year: "2026",
       title: "You are invited",
-      text: "With the blessings of our families, we begin our life together with joy and reverence.",
+      text: "After years of crossing paths, missed chances and one very well-timed DM, they’re finally beginning their life together.",
     },
   ],
   blessing: "Celebration · Tradition · Togetherness",
   families: [
-    { side: "Son of", names: "Mr. Rajan & Family" },
-    { side: "Daughter of", names: "Mr. Segaran & Family" },
+    { side: "Son of", names: "Mr and Mrs Rajandran" },
+    { side: "Daughter of", names: "Mr and Mrs Segaran" },
   ],
   contacts: [
     { name: "Arvend", role: "Groom's side", phone: "" },

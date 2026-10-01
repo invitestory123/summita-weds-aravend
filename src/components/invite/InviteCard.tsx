@@ -96,8 +96,11 @@ export function InviteCard() {
             <p className="mt-7 font-sans text-[0.55rem] tracking-[0.34em] text-ink/70 uppercase">
               venue
             </p>
-            <p className="font-display text-3xl tracking-wide text-leaf-deep uppercase">
-              {invite.city}
+            <p className="font-display text-2xl sm:text-3xl font-semibold tracking-wide text-leaf-deep uppercase">
+              {invite.venue.name}
+            </p>
+            <p className="mx-auto mt-1.5 max-w-xs font-serif text-sm leading-relaxed text-ink/80">
+              {invite.venue.address}
             </p>
 
             <img
