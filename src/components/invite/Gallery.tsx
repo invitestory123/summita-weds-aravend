@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
-const c1 = "https://media.invitestory.in/toran-telugu/src/assets/couple-1.jpg";
-const c2 = "https://media.invitestory.in/toran-telugu/src/assets/couple-2.jpg";
-const c3 = "https://media.invitestory.in/toran-telugu/src/assets/couple-3.jpg";
-const c4 = "https://media.invitestory.in/toran-telugu/src/assets/couple-4.jpg";
+import c1 from "@/assets/couple-1.jpg";
+import c2 from "@/assets/couple-2.jpg";
+import c3 from "@/assets/couple-3.jpg";
+import c4 from "@/assets/couple-4.jpg";
+import c5 from "@/assets/couple-5.jpg";
 import { Reveal } from "./Reveal";
 import { Ornament } from "./Ornament";
 
 const photos = [
-  { src: c1, alt: "The couple at a temple corridor at golden hour" },
-  { src: c2, alt: "The couple laughing in the Nilgiris tea hills" },
-  { src: c3, alt: "Mehendi-covered hands held together" },
-  { src: c4, alt: "A gopuram at dawn with brass lamps" },
+  { src: c1, alt: "Arvend & Summita" },
+  { src: c2, alt: "Bridal Mehendi" },
+  { src: c3, alt: "Arvend & Summita by the Lake" },
+  { src: c4, alt: "Arvend & Summita Smiling" },
+  { src: c5, alt: "Arvend & Summita Evening Celebration" },
 ];
 
 export function Gallery() {
