@@ -1,0 +1,226 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Wedding invitation design system — South Indian / banana leaf template.
+ * Swap the :root token block to re-skin the whole template.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  /* Template palette */
+  --color-maroon: var(--maroon);
+  --color-maroon-deep: var(--maroon-deep);
+  --color-brass: var(--brass);
+  --color-brass-soft: var(--brass-soft);
+  --color-leaf: var(--leaf);
+  --color-leaf-deep: var(--leaf-deep);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+
+  --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-script: "Pinyon Script", cursive;
+  --font-sans: "Karla", system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.25rem;
+
+  --maroon-deep: oklch(0.21 0.075 24);
+  --maroon: oklch(0.38 0.13 22);
+  --brass: oklch(0.74 0.115 79);
+  --brass-soft: oklch(0.86 0.06 82);
+  --leaf: oklch(0.52 0.1 155);
+  --leaf-deep: oklch(0.35 0.07 155);
+  --paper: oklch(0.945 0.018 82);
+  --ink: oklch(0.32 0.1 24);
+
+  --background: var(--maroon-deep);
+  --foreground: var(--paper);
+  --card: oklch(0.26 0.08 24);
+  --card-foreground: var(--paper);
+  --popover: oklch(0.26 0.08 24);
+  --popover-foreground: var(--paper);
+  --primary: var(--brass);
+  --primary-foreground: oklch(0.21 0.075 24);
+  --secondary: oklch(0.3 0.09 24);
+  --secondary-foreground: var(--paper);
+  --muted: oklch(0.3 0.06 24);
+  --muted-foreground: oklch(0.78 0.03 70);
+  --accent: var(--leaf);
+  --accent-foreground: var(--paper);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.74 0.115 79 / 25%);
+  --input: oklch(0.74 0.115 79 / 30%);
+  --ring: var(--brass);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+}
+
+/* Fine film grain overlay */
+@utility grain {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+}
+
+@utility deckle {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M2,1 C20,2.5 40,0 62,1.6 C80,2.8 96,0.6 98.4,2.2 L99.2,50 L98,97.5 C78,99.4 55,97.6 34,99 C18,99.9 4,98.2 1.4,97.6 L0.8,52 Z' fill='%23000'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M2,1 C20,2.5 40,0 62,1.6 C80,2.8 96,0.6 98.4,2.2 L99.2,50 L98,97.5 C78,99.4 55,97.6 34,99 C18,99.9 4,98.2 1.4,97.6 L0.8,52 Z' fill='%23000'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+@utility shimmer-text {
+  background: linear-gradient(
+    100deg,
+    var(--brass) 0%,
+    var(--brass-soft) 35%,
+    oklch(0.98 0.03 85) 50%,
+    var(--brass-soft) 65%,
+    var(--brass) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: brass-sweep 6s linear infinite;
+}
+
+@keyframes brass-sweep {
+  0% {
+    background-position: 150% 0;
+  }
+  100% {
+    background-position: -150% 0;
+  }
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate3d(var(--drift, 30px), 110vh, 0) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+@keyframes lamp-flicker {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  70% {
+    opacity: 0.85;
+    transform: scale(0.99);
+  }
+}
+
+@keyframes spark-rise {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--dx, 0), -320px, 0) scale(1) rotate(220deg);
+    opacity: 0;
+  }
+}
+
+html {
+  /* stops the rubber-band flash under Lenis on Android/iOS */
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  touch-action: pan-y;
+}
+
+/* horizontal carousels need to opt back into sideways panning */
+.h-scroll {
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
