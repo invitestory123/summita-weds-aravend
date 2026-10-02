@@ -44,6 +44,10 @@ export type InviteConfig = {
   blessing: string;
   families: { side: string; names: string }[];
   contacts: { name: string; role: string; phone: string }[];
+  music?: {
+    track: string;
+    title?: string;
+  };
 };
 
 export const invite: InviteConfig = {
@@ -53,6 +57,10 @@ export const invite: InviteConfig = {
   coupleLine: ["Arvend", "Summita"],
   hashtag: "#ArvendWedsSummita",
   intro: "Together with their families",
+  music: {
+    track: "./asbg.mp3",
+    title: "Naane Varugiraen",
+  },
   timeZone: "Asia/Kuala_Lumpur",
   weddingISO: "2026-11-22T09:30:00+08:00",
   dateLabel: {
