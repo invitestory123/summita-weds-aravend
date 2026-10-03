@@ -4,24 +4,16 @@ import { invite } from "@/lib/invite.config";
 
 export function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
-    let audio = document.getElementById("wedding-bg-audio") as HTMLAudioElement | null;
-    if (!audio) {
-      audio = document.createElement("audio");
-      audio.id = "wedding-bg-audio";
-      audio.loop = true;
-      audio.preload = "auto";
-      audio.setAttribute("playsinline", "true");
-      audio.setAttribute("autoplay", "true");
-      audio.src = invite.music?.track || "./asbg.mp3";
-      document.body.appendChild(audio);
-    }
-    audio.volume = 0.75;
-    audioRef.current = audio;
+    const audio = document.getElementById("wedding-bg-audio") as HTMLAudioElement | null;
+    if (!audio) return;
 
-    const onPlay = () => setIsPlaying(true);
+    const onPlay = () => {
+      setIsPlaying(true);
+      setShowPrompt(false);
+    };
     const onPause = () => setIsPlaying(false);
 
     audio.addEventListener("play", onPlay);
@@ -29,77 +21,55 @@ export function MusicPlayer() {
 
     if (!audio.paused) {
       setIsPlaying(true);
+    } else {
+      const timer = setTimeout(() => {
+        if (audio.paused) {
+          setShowPrompt(true);
+        }
+      }, 1500);
+      return () => {
+        clearTimeout(timer);
+        audio.removeEventListener("play", onPlay);
+        audio.removeEventListener("pause", onPause);
+      };
     }
 
-    const startAudio = (e?: Event) => {
-      if (e?.target && (e.target as Element).closest?.("#music-toggle-btn")) {
-        return;
-      }
-      if (audio && audio.paused) {
-        audio
-          .play()
-          .then(() => {
-            setIsPlaying(true);
-            cleanupListeners();
-          })
-          .catch(() => {
-            // Autoplay held by browser until user gesture
-          });
-      }
-    };
-
-    const events = [
-      "click",
-      "touchstart",
-      "touchend",
-      "pointerdown",
-      "mousedown",
-      "keydown",
-      "scroll",
-    ];
-
-    const cleanupListeners = () => {
-      events.forEach((evt) => {
-        window.removeEventListener(evt, startAudio, true);
-        document.removeEventListener(evt, startAudio, true);
-      });
-    };
-
-    events.forEach((evt) => {
-      window.addEventListener(evt, startAudio, { passive: true, capture: true });
-      document.addEventListener(evt, startAudio, { passive: true, capture: true });
-    });
-
-    // Attempt autoplay immediately
-    startAudio();
-
     return () => {
-      audio?.removeEventListener("play", onPlay);
-      audio?.removeEventListener("pause", onPause);
-      cleanupListeners();
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
     };
   }, []);
 
   const toggleMusic = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (audio.paused) {
-      audio
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch(console.error);
+    setShowPrompt(false);
+    const w = (window as unknown as { weddingAudio?: { toggle: () => void } }).weddingAudio;
+    if (w) {
+      w.toggle();
     } else {
-      audio.pause();
-      setIsPlaying(false);
+      const audio = document.getElementById("wedding-bg-audio") as HTMLAudioElement | null;
+      if (audio) {
+        if (audio.paused) {
+          audio.play().catch(console.error);
+        } else {
+          audio.pause();
+        }
+      }
     }
   };
 
   return (
-    <div className="fixed top-4 right-4 z-50 sm:top-6 sm:right-6">
+    <div className="fixed top-4 right-4 z-50 flex items-center gap-2 sm:top-6 sm:right-6">
+      {showPrompt && !isPlaying && (
+        <button
+          type="button"
+          onClick={toggleMusic}
+          className="animate-pulse rounded-full border border-brass/60 bg-maroon-deep/90 px-3 py-1 text-xs font-serif tracking-wider text-brass shadow-lg backdrop-blur-md transition-all hover:bg-maroon-deep active:scale-95"
+        >
+          ♫ Play Music
+        </button>
+      )}
+
       <button
         id="music-toggle-btn"
         type="button"

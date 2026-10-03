@@ -10,79 +10,126 @@
     <div id="root"></div>
 
     <!-- Background Music Audio -->
-    <audio
-      id="wedding-bg-audio"
-      src="./asbg.mp3"
-      loop
-      preload="auto"
-      playsinline
-      autoplay
-      webkit-playsinline
-    >
+    <audio id="wedding-bg-audio" loop preload="auto" playsinline webkit-playsinline>
       <source src="./asbg.mp3" type="audio/mpeg" />
-      <source src="./asbg.mpeg" type="audio/mpeg" />
       <source src="asbg.mp3" type="audio/mpeg" />
+      <source src="./asbg.mpeg" type="audio/mpeg" />
     </audio>
 
     <script>
       (function () {
         var audio = document.getElementById("wedding-bg-audio");
         if (!audio) return;
-        audio.volume = 0.75;
 
+        try {
+          var resolvedSrc = new URL("asbg.mp3", document.baseURI || window.location.href).href;
+          if (!audio.src) {
+            audio.src = resolvedSrc;
+          }
+        } catch (e) {}
+
+        audio.volume = 0.75;
+        audio.preload = "auto";
+
+        var isPlayPending = false;
         var hasStarted = false;
 
-        function startPlayback() {
-          if (hasStarted || !audio) return;
-          var promise = audio.play();
-          if (promise !== undefined) {
-            promise
-              .then(function () {
-                hasStarted = true;
-                removeTriggers();
-              })
-              .catch(function () {
-                // Autoplay blocked by browser policy until first interaction
-              });
-          }
+        function resumeAudioContext() {
+          try {
+            var AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) {
+              if (!window._audioCtx) {
+                window._audioCtx = new AudioCtx();
+              }
+              if (window._audioCtx.state === "suspended") {
+                window._audioCtx.resume();
+              }
+            }
+          } catch (e) {}
         }
 
-        function onInteraction(e) {
-          if (e && e.target && e.target.closest && e.target.closest("#music-toggle-btn")) {
+        function safePlay() {
+          if (!audio) return;
+          if (!audio.paused) {
+            hasStarted = true;
+            cleanupTriggers();
             return;
           }
-          startPlayback();
+          if (isPlayPending) return;
+
+          isPlayPending = true;
+          audio.muted = false;
+          resumeAudioContext();
+
+          var p = audio.play();
+          if (p !== undefined) {
+            p.then(function () {
+              isPlayPending = false;
+              hasStarted = true;
+              cleanupTriggers();
+            }).catch(function () {
+              isPlayPending = false;
+            });
+          } else {
+            isPlayPending = false;
+            hasStarted = true;
+            cleanupTriggers();
+          }
         }
 
-        var events = [
-          "click",
-          "touchstart",
-          "touchend",
-          "pointerdown",
-          "mousedown",
-          "keydown",
-          "scroll",
-        ];
+        function onFirstGesture(e) {
+          if (hasStarted) {
+            cleanupTriggers();
+            return;
+          }
+          if (e && e.target) {
+            var el = e.target instanceof Element ? e.target : e.target.parentElement;
+            if (el && el.closest && el.closest("#music-toggle-btn")) {
+              return;
+            }
+          }
+          safePlay();
+        }
 
-        function removeTriggers() {
+        var events = ["pointerdown", "touchstart", "touchend", "click", "keydown"];
+
+        function cleanupTriggers() {
           events.forEach(function (evt) {
-            window.removeEventListener(evt, onInteraction, true);
-            document.removeEventListener(evt, onInteraction, true);
+            window.removeEventListener(evt, onFirstGesture, true);
+            document.removeEventListener(evt, onFirstGesture, true);
           });
         }
 
         events.forEach(function (evt) {
-          window.addEventListener(evt, onInteraction, { capture: true, passive: true });
-          document.addEventListener(evt, onInteraction, { capture: true, passive: true });
+          window.addEventListener(evt, onFirstGesture, { capture: true, passive: true });
+          document.addEventListener(evt, onFirstGesture, { capture: true, passive: true });
         });
 
-        // Attempt autoplay immediately
-        startPlayback();
+        // 1. Try playing immediately upon HTML parsing
+        safePlay();
 
+        // 2. Try playing on DOMContentLoaded and Window Load
         if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", startPlayback, { once: true });
+          document.addEventListener("DOMContentLoaded", safePlay, { once: true });
         }
-        window.addEventListener("load", startPlayback, { once: true });
+        window.addEventListener("load", safePlay, { once: true });
+
+        // Expose controller for React UI
+        window.weddingAudio = {
+          audio: audio,
+          play: safePlay,
+          pause: function () {
+            if (audio) audio.pause();
+          },
+          toggle: function () {
+            if (!audio) return;
+            if (audio.paused) {
+              safePlay();
+            } else {
+              audio.pause();
+            }
+          },
+        };
       })();
     </script>
 
