@@ -13,6 +13,7 @@ import { Gallery } from "@/components/invite/Gallery";
 import { FooterBlessing } from "@/components/invite/FooterBlessing";
 import { StickyBar } from "@/components/invite/StickyBar";
 import { MusicPlayer } from "@/components/invite/MusicPlayer";
+import { OpenInvitation } from "@/components/invite/OpenInvitation";
 
 const title = `${invite.coupleLine.join(" & ")} · ${invite.dateLabel.number} ${invite.dateLabel.monthYear}`;
 const description = `${invite.intro}, ${invite.coupleLine.join(" and ")} invite you to their wedding in ${invite.city} on ${invite.dateLabel.day}, ${invite.dateLabel.number} ${invite.dateLabel.monthYear} at ${invite.dateLabel.time}.`;
@@ -35,6 +36,7 @@ export const Route = createFileRoute("/")({
 function Invitation() {
   return (
     <main className="relative overflow-x-hidden">
+      <OpenInvitation />
       <MusicPlayer />
       <SmoothScroll />
       <Hero />
