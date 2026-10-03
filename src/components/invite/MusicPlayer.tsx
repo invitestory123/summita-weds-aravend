@@ -13,6 +13,8 @@ export function MusicPlayer() {
       audio.id = "wedding-bg-audio";
       audio.loop = true;
       audio.preload = "auto";
+      audio.setAttribute("playsinline", "true");
+      audio.setAttribute("autoplay", "true");
       audio.src = invite.music?.track || "./asbg.mp3";
       document.body.appendChild(audio);
     }
@@ -29,7 +31,10 @@ export function MusicPlayer() {
       setIsPlaying(true);
     }
 
-    const startAudio = () => {
+    const startAudio = (e?: Event) => {
+      if (e?.target && (e.target as Element).closest?.("#music-toggle-btn")) {
+        return;
+      }
       if (audio && audio.paused) {
         audio
           .play()
@@ -43,15 +48,23 @@ export function MusicPlayer() {
       }
     };
 
+    const events = [
+      "click",
+      "touchstart",
+      "touchend",
+      "pointerdown",
+      "mousedown",
+      "keydown",
+      "scroll",
+    ];
+
     const cleanupListeners = () => {
-      const events = ["click", "touchstart", "touchend", "pointerdown", "scroll", "keydown"];
       events.forEach((evt) => {
         window.removeEventListener(evt, startAudio, true);
         document.removeEventListener(evt, startAudio, true);
       });
     };
 
-    const events = ["click", "touchstart", "touchend", "pointerdown", "scroll", "keydown"];
     events.forEach((evt) => {
       window.addEventListener(evt, startAudio, { passive: true, capture: true });
       document.addEventListener(evt, startAudio, { passive: true, capture: true });
@@ -88,6 +101,7 @@ export function MusicPlayer() {
   return (
     <div className="fixed top-4 right-4 z-50 sm:top-6 sm:right-6">
       <button
+        id="music-toggle-btn"
         type="button"
         onClick={toggleMusic}
         aria-label={isPlaying ? "Mute background music" : "Play background music"}

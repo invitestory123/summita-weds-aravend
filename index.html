@@ -10,10 +10,81 @@
     <div id="root"></div>
 
     <!-- Background Music Audio -->
-    <audio id="wedding-bg-audio" loop preload="auto" playsinline>
+    <audio
+      id="wedding-bg-audio"
+      src="./asbg.mp3"
+      loop
+      preload="auto"
+      playsinline
+      autoplay
+      webkit-playsinline
+    >
       <source src="./asbg.mp3" type="audio/mpeg" />
       <source src="./asbg.mpeg" type="audio/mpeg" />
+      <source src="asbg.mp3" type="audio/mpeg" />
     </audio>
+
+    <script>
+      (function () {
+        var audio = document.getElementById("wedding-bg-audio");
+        if (!audio) return;
+        audio.volume = 0.75;
+
+        var hasStarted = false;
+
+        function startPlayback() {
+          if (hasStarted || !audio) return;
+          var promise = audio.play();
+          if (promise !== undefined) {
+            promise
+              .then(function () {
+                hasStarted = true;
+                removeTriggers();
+              })
+              .catch(function () {
+                // Autoplay blocked by browser policy until first interaction
+              });
+          }
+        }
+
+        function onInteraction(e) {
+          if (e && e.target && e.target.closest && e.target.closest("#music-toggle-btn")) {
+            return;
+          }
+          startPlayback();
+        }
+
+        var events = [
+          "click",
+          "touchstart",
+          "touchend",
+          "pointerdown",
+          "mousedown",
+          "keydown",
+          "scroll",
+        ];
+
+        function removeTriggers() {
+          events.forEach(function (evt) {
+            window.removeEventListener(evt, onInteraction, true);
+            document.removeEventListener(evt, onInteraction, true);
+          });
+        }
+
+        events.forEach(function (evt) {
+          window.addEventListener(evt, onInteraction, { capture: true, passive: true });
+          document.addEventListener(evt, onInteraction, { capture: true, passive: true });
+        });
+
+        // Attempt autoplay immediately
+        startPlayback();
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", startPlayback, { once: true });
+        }
+        window.addEventListener("load", startPlayback, { once: true });
+      })();
+    </script>
 
     <script type="module" src="/src/main.tsx"></script>
   </body>
